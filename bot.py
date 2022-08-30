@@ -44,7 +44,7 @@ async def download_pack(message: types.Message, state:FSMContext):
         loader =  PipLoader(message.text)
         files, acrhive_name = loader.get_files()
         await send_document(message, acrhive_name, files, pack_dir=loader.pack_dir)
-        await message.answer(f'1. Unpack this archive in your project on the same level with venv.\n2. Use this command to install extensions: {loader.get_command()}\n3. This packeges supports only python 3.10 and over.',reply_markup=keyboard_main)
+        await message.answer(f'1. Unpack this archive in your project on the same level with venv.\n2. Use this command to install extensions: {loader.get_command()}\n3. This packeges supports only python 3.10 and over.\n4. If you want to install setuptools - user --force-reinstall',reply_markup=keyboard_main)
         del loader
         
     except Exception as ex:
