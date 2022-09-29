@@ -23,16 +23,23 @@ class PipLoader:
         os.mkdir(self.pack_dir)
         print(f'Make directory for {self.pack_name}')
 
+    def get_name(self, name:str):
+        return name.split('==')[0]
+
     def download(self):
-        self.make_req_file()
-        os.system(f'pip download -d {self.pack_dir} --isolated {self.pack_name_orig} wheel pip setuptools')  
+        requirement_names = self.make_req_file()
+        for name in map(self.get_name,requirement_names):
+            try:
+                os.system(f'pip download -d {self.pack_dir} --isolated --no-deps --python-version 38 --python-version 3 --platform win_amd64 --platform any {name} wheel pip setuptools')  
+            except Exception as ex:
+                pass
 
     def make_req_file(self):
         for index, pack in enumerate(self.pack_name_list):
             self.req_path = Path(self.pack_name,f'requiremets_{self.pack_name}_{index}.txt')
             os.system(f'johnnydep {pack} --output-format pinned > {self.req_path}')
 
-        self.unite_req_files()
+        return self.unite_req_files()
 
     def unite_req_files(self):
         self.req_text = []
@@ -46,6 +53,8 @@ class PipLoader:
         with (open(Path(self.pack_dir,'requirements.txt') ,'w', encoding='utf-8')) as req_file:
             for line in self.req_text:
                 req_file.write(str(line))
+
+        return self.req_text
 
     def __del__(self):
         shutil.rmtree(self.pack_dir)
