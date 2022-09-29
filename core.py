@@ -8,6 +8,8 @@ class PipLoader:
         self.pack_name_list = pip_name.split()
         self.pack_name_orig = pip_name
         self.pack_name_list.append('wheel')
+        self.pack_name_list.append('pip')
+        self.pack_name_list.append('setuptools')
         # self.pack_name_list.append('pip')
         self.create_folder_for_pack()
         self.download()
@@ -30,7 +32,7 @@ class PipLoader:
         requirement_names = self.make_req_file()
         for name in map(self.get_name,requirement_names):
             try:
-                os.system(f'pip download -d {self.pack_dir} --isolated --no-deps --python-version 38 --python-version 3 --platform win_amd64 --platform any {name} wheel pip setuptools')  
+                os.system(f'pip download -d {self.pack_dir} --isolated --no-deps --python-version 38 --platform win_amd64 {name}')  
             except Exception as ex:
                 pass
 
