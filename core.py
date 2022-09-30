@@ -35,6 +35,18 @@ class PipLoader:
                 os.system(f'pip download -d {self.pack_dir} --isolated --no-deps --python-version 38 --platform win_amd64 {name}')  
             except Exception as ex:
                 pass
+        
+        try:
+            os.system(f'pip download -d {self.pack_dir} --isolated --only-binary=:all: --python-version 38 --platform win_amd64 {self.pack_name_orig}')  
+        except Exception as ex:
+                pass  
+        
+        try:
+            os.system(f'pip download -d {self.pack_dir} --isolated --only-binary=:all: {self.pack_name_orig}')
+        except Exception as ex:
+                pass  
+        # os.system(f'pip download -d {self.pack_dir} --isolated --no-binary=:all: {self.pack_name_orig}')
+        # os.system(f'pip download -d {self.pack_dir} --isolated --no-binary=:all: --python-version 38 --platform win_amd64 {self.pack_name_orig}')
 
     def make_req_file(self):
         for index, pack in enumerate(self.pack_name_list):
